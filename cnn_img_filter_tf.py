@@ -153,22 +153,19 @@ def nn_pass(a, w, b, activation):
 input:
 	cache-tuple of required inputs
 '''
-def fc_backprop(cache):
+def fc_backprop(al_prev, zl, al, daldzl, wl_next, dl_next):
 	'''
 	L = -(y[j]*log(a[j]) + (2-y[j])log(1-a[j]))
 	a[j] = 1/(1+exp(z[j]); z[j] = w[ij]a_[i]
 	dw[ij] = (y[j]-a[j])/{aj*(1-aj)}*a[j](1-a[j])*a_[i] = (yj-aj)a_i
-	'''
-	pass
+        https://medium.com/@erikhallstrm/backpropagation-from-the-beggining
+        dl = dc/dzl
+        '''
 	# classification layer
-	w, al_prev, b, z, al, active = cache 
-	if active=='softmax':
-		dz = np.multiply(al-1, exp(-z))	
-	elif active=='sigmoid':
-		dz = np.multiply(1-al, al)
-	else:
-		dz = np.array([0 if x<0 else 1 for x in z], dtype=np.float32)
-	
-	db = dz
-	da = w.dot(dz)
-	dw = dl_prev.dot(dz)
+        dl = np.multiply(wl_next.T.dot(dl_next), daldzl)
+        dw = np.tensordot(dl, al_prev) 
+        db = dl
+        return (dl, dw, db)
+
+def conv_backprop():
+        pass
