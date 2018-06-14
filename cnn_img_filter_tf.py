@@ -133,7 +133,7 @@ def pool(image, f, stride, type='max'):
 
 
 # forward pass for fully connected
-def nn_pass(a, w, b, activation):
+def fc_forward(a, w, b, activation):
 	'''
 	a = activation of prev layer (nx1)
 	w = weight parameter (mxn)
@@ -153,7 +153,7 @@ def nn_pass(a, w, b, activation):
 input:
 	cache-tuple of required inputs
 '''
-def fc_backprop(al_prev, zl, al, daldzl, wl_next, dl_next):
+def fc_backprop(al_prev, zl, al, wl_next, dl_next, activationL):
 	'''
 	L = -(y[j]*log(a[j]) + (2-y[j])log(1-a[j]))
 	a[j] = 1/(1+exp(z[j]); z[j] = w[ij]a_[i]
@@ -161,11 +161,22 @@ def fc_backprop(al_prev, zl, al, daldzl, wl_next, dl_next):
         https://medium.com/@erikhallstrm/backpropagation-from-the-beggining
         dl = dc/dzl
         '''
+        if activationL = 'sigmoid':
+            daldzl = al*(1-al)
+        elif activationL = 'softmax':
+            daldzl = (al-1)*exp(-zl)
+        else            # default case : relu, dvt of relu is step function 
+            daldzl = np.array([0 if x<0 else 1 for x in zl])
+
 	# classification layer
         dl = np.multiply(wl_next.T.dot(dl_next), daldzl)
         dw = np.tensordot(dl, al_prev) 
         db = dl
+
         return (dl, dw, db)
 
 def conv_backprop():
-        pass
+        '''
+        (input, filter) -> convOut, (+ bias -> activate) -> activation
+        '''
+        
