@@ -8,8 +8,9 @@ sess = tf.Session()
 a = tf.constant(10, name='const_a')
 b = tf.constant(20, name='const_b')
 
+print(sess.run(a))
 
-a = a + 1
+a = 5*a + 1
 
 print(sess.run(a))
 
